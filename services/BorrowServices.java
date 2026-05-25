@@ -13,11 +13,13 @@ public class BorrowServices {
     private final ArrayList<BorrowOperation> borrowRecords;
     private final HashMap<String, PriorityQueue<User>> waitingLists;
     private final BookServices bookServices;
+    private final UserServices userserviServices;
 
     public BorrowServices(BookServices bookServices) {
         this.bookServices = bookServices;
         this.borrowRecords = new ArrayList<>();
         this.waitingLists = new HashMap<>();
+        this.userserviServices = new UserServices();
     }
 
     public ServiceResult borrowBook(User user, String isbn) {
@@ -54,6 +56,7 @@ public class BorrowServices {
 
             borrowRecords.add(operation);
             user.borrowedBooks.add(book);
+            user.borrowedHistoryUser.add(operation);
 
             return new ServiceResult(
                     true,
@@ -111,6 +114,7 @@ public class BorrowServices {
         if (waitingLists.containsKey(isbn)
                 && !waitingLists.get(isbn).isEmpty()) {
             User nextUser = waitingLists.get(isbn).poll();
+
             ServiceResult autoBorrowResult = borrowBook(nextUser, isbn);
 
             if (autoBorrowResult.isSuccess()) {
@@ -153,15 +157,20 @@ public class BorrowServices {
         return new ServiceResult(true, "Waiting list retrieved", waitingUsers);
     }
 
-    public ServiceResult searchBorrowRecord(int userId) {
-        ArrayList<BorrowOperation> records = new ArrayList<>();
+    public ServiceResult searchBorrowRecordByUserId(int userId) {
+        // ArrayList<BorrowOperation> records = new ArrayList<>();
 
-        for (BorrowOperation operation : borrowRecords) {
-            if (operation.getBorrower().getId() == userId) {
-                records.add(operation);
-            }
+        // for (BorrowOperation operation : borrowRecords) {
+        //     if (operation.getBorrower().getId() == userId) {
+        //         records.add(operation);
+        //     }
+        // }
+        User user = userserviServices.getUserById(userId);
+        if (user == null) {
+            return new ServiceResult(false, "User not found");
         }
 
+        ArrayList<BorrowOperation> records = user.borrowedHistoryUser;
         if (records.isEmpty()) {
             return new ServiceResult(false, "No records found");
         }

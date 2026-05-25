@@ -1,7 +1,6 @@
 package library_manage.services;
 
 import java.util.ArrayList;
-
 import library_manage.Model.User;
 import library_manage.util.ServiceResult;
 
@@ -44,5 +43,13 @@ public class UserServices {
 		}
 
 		return new ServiceResult(false, "User not found");
+	}
+	public User getUserById(int id) {
+		for (User user : users) {
+			if (user.getId() == id) {
+				return user;
+			}
+		}
+		return null;
 	}
 }
