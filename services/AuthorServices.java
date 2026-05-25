@@ -1,10 +1,10 @@
-package library_managment.services;
+package library_manage.services;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import library_managment.Model.Author;
-import library_managment.util.*;
+import library_manage.Model.Author;
+import library_manage.util.*;
 
 public class AuthorServices {
     ArrayList<Author> authors = new ArrayList<>();

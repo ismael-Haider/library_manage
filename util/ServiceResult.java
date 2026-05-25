@@ -1,4 +1,4 @@
-package library_managment.util;
+package library_manage.util;
 
 public class ServiceResult {
     private boolean success;

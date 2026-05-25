@@ -1,10 +1,10 @@
-package library_managment.services;
+package library_manage.services;
 
 import java.util.ArrayList;
-import library_managment.Model.Avl;
-import library_managment.Model.Book;
-import library_managment.Model.BookNode;
-import library_managment.util.ServiceResult;
+import library_manage.Model.Avl;
+import library_manage.Model.Book;
+import library_manage.Model.BookNode;
+import library_manage.util.ServiceResult;
 
 public class BookServices {
     // for statistics and quick access to available books count

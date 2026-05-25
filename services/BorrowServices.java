@@ -1,13 +1,13 @@
-package library_managment.services;
+package library_manage.services;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.PriorityQueue;
-import library_managment.Model.Book;
-import library_managment.Model.BorrowOperation;
-import library_managment.Model.User;
-import library_managment.util.ServiceResult;
+import library_manage.Model.Book;
+import library_manage.Model.BorrowOperation;
+import library_manage.Model.User;
+import library_manage.util.ServiceResult;
 
 public class BorrowServices {
     private final ArrayList<BorrowOperation> borrowRecords;

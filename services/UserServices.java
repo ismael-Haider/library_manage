@@ -1,9 +1,9 @@
-package library_managment.services;
+package library_manage.services;
 
 import java.util.ArrayList;
 
-import library_managment.Model.User;
-import library_managment.util.ServiceResult;
+import library_manage.Model.User;
+import library_manage.util.ServiceResult;
 
 public class UserServices {
 	private final ArrayList<User> users;
