@@ -1,5 +1,5 @@
 package library_manage.controller;
 
-public class BorrowController {
+public class transactionsController {
     
 }
