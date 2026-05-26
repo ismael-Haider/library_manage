@@ -23,4 +23,9 @@ public class transactionsController {
         ServiceResult result = borrowService.returnBook(user, isbn);
         return result.getMessage();
     }
+
+    public String getWaitingList(String isbn){
+        return borrowService.showWaitingList(isbn).getMessage();
+    }    
+
 }

@@ -100,7 +100,6 @@ public class BookServices {
         return new ServiceResult(true, "Copies reduced successfully", book);
     }
 
-
     public ServiceResult getAllBooks() {
         ArrayList<BookNode> books = avlBooks.getAllBooks();
         return new ServiceResult(true, "Books retrieved successfully", books);
@@ -112,9 +111,14 @@ public class BookServices {
                 right.book.getBorrowedCount(),
                 left.book.getBorrowedCount()));
 
-        if (books.size() <= 10) {
-            return new ServiceResult(true, "Most borrowed books found", books);        }
+        ArrayList<Book> result = new ArrayList<>();
+        int limit = Math.min(10, books.size());
 
-        return new ServiceResult(true, "Most borrowed books found", books.subList(0, 10));
+        for (int i = 0; i < limit; i++) {
+            result.add(books.get(i).book);
+        }
+        return new ServiceResult(true,
+                "Most borrowed books found",
+                result);
     }
 }
