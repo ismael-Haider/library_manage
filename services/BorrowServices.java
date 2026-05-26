@@ -13,13 +13,14 @@ public class BorrowServices {
     private final ArrayList<BorrowOperation> borrowRecords;
     private final HashMap<String, PriorityQueue<User>> waitingLists;
     private final BookServices bookServices;
-    private final UserServices userserviServices;
+    private final UserServices userServices;
 
-    public BorrowServices(BookServices bookServices) {
+    public BorrowServices(BookServices bookServices, UserServices userServices) {
         this.bookServices = bookServices;
         this.borrowRecords = new ArrayList<>();
         this.waitingLists = new HashMap<>();
-        this.userserviServices = new UserServices();
+        this.userServices = userServices;
+        loadBorrowRecordsFromDisk();
     }
 
     public ServiceResult borrowBook(User user, String isbn) {
@@ -57,6 +58,7 @@ public class BorrowServices {
             borrowRecords.add(operation);
             user.borrowedBooks.add(book);
             user.borrowedHistoryUser.add(operation);
+            saveBorrowRecords();
 
             return new ServiceResult(
                     true,
@@ -64,7 +66,7 @@ public class BorrowServices {
                     operation);
         }
 
-        // if number of copyies doesn't enough 
+        // if number of copyies doesn't enough
         if (!waitingLists.containsKey(isbn)) {
             waitingLists.put(
                     isbn,
@@ -78,8 +80,6 @@ public class BorrowServices {
                 false,
                 "Book unavailable. Added to waiting list. Position: " + waitingLists.get(isbn).size());
     }
-
-
 
     public ServiceResult returnBook(User user, String isbn) {
         if (user == null) {
@@ -118,6 +118,7 @@ public class BorrowServices {
             ServiceResult autoBorrowResult = borrowBook(nextUser, isbn);
 
             if (autoBorrowResult.isSuccess()) {
+                saveBorrowRecords();
                 return new ServiceResult(
                         true,
                         "Book returned and automatically borrowed to: " + nextUser.getName(),
@@ -125,6 +126,7 @@ public class BorrowServices {
             }
         }
 
+        saveBorrowRecords();
         return new ServiceResult(true, "Book returned successfully");
     }
 
@@ -161,11 +163,11 @@ public class BorrowServices {
         // ArrayList<BorrowOperation> records = new ArrayList<>();
 
         // for (BorrowOperation operation : borrowRecords) {
-        //     if (operation.getBorrower().getId() == userId) {
-        //         records.add(operation);
-        //     }
+        // if (operation.getBorrower().getId() == userId) {
+        // records.add(operation);
         // }
-        User user = userserviServices.getUserById(userId);
+        // }
+        User user = userServices.getUserById(userId);
         if (user == null) {
             return new ServiceResult(false, "User not found");
         }
@@ -176,5 +178,33 @@ public class BorrowServices {
         }
 
         return new ServiceResult(true, "Records found", records);
+    }
+
+    public ArrayList<BorrowOperation> getBorrowRecords() {
+        return borrowRecords;
+    }
+
+    public int getBorrowRecordCount() {
+        return borrowRecords.size();
+    }
+
+    public void saveBorrowRecords() {
+        library_manage.util.TxtDataStore.saveBorrowRecords(borrowRecords);
+        bookServices.saveBooks();
+        userServices.saveUsers();
+    }
+
+    private void loadBorrowRecordsFromDisk() {
+        ArrayList<BorrowOperation> records = library_manage.util.TxtDataStore.loadBorrowRecords(
+                userServices::getUserById,
+                bookServices::getBookByIsbn);
+
+        for (BorrowOperation operation : records) {
+            borrowRecords.add(operation);
+            operation.getBorrower().borrowedHistoryUser.add(operation);
+            if (!operation.isReturned() && !operation.getBorrower().borrowedBooks.contains(operation.getBook())) {
+                operation.getBorrower().borrowedBooks.add(operation.getBook());
+            }
+        }
     }
 }

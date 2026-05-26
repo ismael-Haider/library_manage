@@ -3,12 +3,13 @@ package library_manage.services;
 import java.util.ArrayList;
 import library_manage.Model.User;
 import library_manage.util.ServiceResult;
+import library_manage.util.TxtDataStore;
 
 public class UserServices {
 	private final ArrayList<User> users;
 
 	public UserServices() {
-		this.users = new ArrayList<>();
+		this.users = TxtDataStore.loadUsers();
 	}
 
 	public User findOrCreateUser(String name, boolean graduate) {
@@ -24,6 +25,7 @@ public class UserServices {
 
 		User newUser = new User(name, graduate);
 		users.add(newUser);
+		TxtDataStore.saveUsers(users);
 		return newUser;
 	}
 
@@ -44,6 +46,7 @@ public class UserServices {
 
 		return new ServiceResult(false, "User not found");
 	}
+
 	public User getUserById(int id) {
 		for (User user : users) {
 			if (user.getId() == id) {
@@ -51,5 +54,17 @@ public class UserServices {
 			}
 		}
 		return null;
+	}
+
+	public ArrayList<User> getUsers() {
+		return users;
+	}
+
+	public void saveUsers() {
+		TxtDataStore.saveUsers(users);
+	}
+
+	public int getUserCount() {
+		return users.size();
 	}
 }

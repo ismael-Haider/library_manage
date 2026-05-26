@@ -6,15 +6,20 @@ import library_manage.util.ServiceResult;
 
 public class BookController {
     private BookServices bookService;
-    private AuthorServices auhtAuthorServices;
+    private AuthorServices authorServices;
 
     public BookController(BookServices bookService) {
+        this(bookService, new AuthorServices());
+    }
+
+    public BookController(BookServices bookService, AuthorServices authorServices) {
         this.bookService = bookService;
+        this.authorServices = authorServices;
     }
 
     public String addBook(String isbn, String title, String authorName, int copies) {
-        Author author = auhtAuthorServices.findOrCreateAuthor(authorName);
-        Book book = new Book(isbn, title, author, copies);
+        Author author = authorServices.findOrCreateAuthor(authorName);
+        Book book = new Book(title, isbn, author, copies);
         ServiceResult result = bookService.addBook(book);
         return result.getMessage();
     }

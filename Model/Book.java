@@ -18,6 +18,14 @@ public class Book {
         this.borrowedCount = 0;
     }
 
+    public Book(String title, String isbn, Author author, int numberOfCopies, int borrowedCount) {
+        this.title = title;
+        this.isbn = isbn;
+        this.author = author;
+        this.numberOfCopies = numberOfCopies;
+        this.borrowedCount = borrowedCount;
+    }
+
     public String getTitle() {
         return title;
     }

@@ -23,6 +23,20 @@ public class BorrowOperation {
         this.actualReturnDate = null;
     }
 
+    public BorrowOperation(User borrower, Book book,
+            LocalDate borrowDate,
+            LocalDate expectedReturnDate,
+            boolean returned,
+            LocalDate actualReturnDate) {
+
+        this.borrower = borrower;
+        this.book = book;
+        this.borrowDate = borrowDate;
+        this.expectedReturnDate = expectedReturnDate;
+        this.returned = returned;
+        this.actualReturnDate = actualReturnDate;
+    }
+
     public User getBorrower() {
         return borrower;
     }
