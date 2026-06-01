@@ -5,8 +5,8 @@ import library_manage.services.*;
 import library_manage.util.ServiceResult;
 
 public class BookController {
-    private BookServices bookService;
-    private AuthorServices authorServices;
+    private final BookServices bookService;
+    private final AuthorServices authorServices;
 
     public BookController(BookServices bookService) {
         this(bookService, new AuthorServices());
@@ -17,31 +17,34 @@ public class BookController {
         this.authorServices = authorServices;
     }
 
-    public String addBook(String isbn, String title, String authorName, int copies) {
+    public ServiceResult addBook(String isbn, String title, String authorName, int copies) {
         Author author = authorServices.findOrCreateAuthor(authorName);
         Book book = new Book(title, isbn, author, copies);
-        ServiceResult result = bookService.addBook(book);
-        return result.getMessage();
+        return bookService.addBook(book);
     }
 
-    public String searchBookbyIsbn(String isbn) {
-        ServiceResult result = bookService.searchBookByIsbn(isbn);
-        if (result.isSuccess()) {
-            Book book = (Book) result.getData();
-            return "Found: " + book.getTitle() + " by " + book.getAuthor().getName() +
-                    " | Copies: " + book.getnumberOfCopies() + " | Borrowed: " + book.getBorrowedCount();
-        }
-        return result.getMessage();
+    public ServiceResult searchBookbyIsbn(String isbn) {
+        return bookService.searchBookByIsbn(isbn);
     }
 
-    public String searchBookByTitle(String title) {
-        ServiceResult result = bookService.searchBookByTitle(title);
-        if (result.isSuccess()) {
-            Book book = (Book) result.getData();
-            return "Found: " + book.getTitle() + " by " + book.getAuthor().getName() +
-                    " | Copies: " + book.getnumberOfCopies() + " | Borrowed: " + book.getBorrowedCount();
-        }
-        return result.getMessage();
+    public ServiceResult searchBookByTitle(String title) {
+        return bookService.searchBookByTitle(title);
+    }
+
+    public ServiceResult deleteBook(String isbn) {
+        return bookService.deleteBook(isbn);
+    }
+
+    public ServiceResult addCopies(String isbn, int count) {
+        return bookService.addCopies(isbn, count);
+    }
+
+    public ServiceResult reduceCopies(String isbn, int count) {
+        return bookService.reduceCopies(isbn, count);
+    }
+
+    public ServiceResult getAllBooks() {
+        return bookService.getAllBooks();
     }
 
 }

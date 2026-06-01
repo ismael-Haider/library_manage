@@ -131,6 +131,7 @@ public class BorrowServices {
     }
 
     public ServiceResult getBorrowHistory() {
+        pruneArchivedBorrowHistory();
         if (borrowRecords.isEmpty()) {
             return new ServiceResult(false, "No borrow history found");
         }
@@ -189,6 +190,7 @@ public class BorrowServices {
     }
 
     public void saveBorrowRecords() {
+        pruneArchivedBorrowHistory();
         library_manage.util.TxtDataStore.saveBorrowRecords(borrowRecords);
         bookServices.saveBooks();
         userServices.saveUsers();
@@ -205,6 +207,18 @@ public class BorrowServices {
             if (!operation.isReturned() && !operation.getBorrower().borrowedBooks.contains(operation.getBook())) {
                 operation.getBorrower().borrowedBooks.add(operation.getBook());
             }
+        }
+        pruneArchivedBorrowHistory();
+    }
+
+    private void pruneArchivedBorrowHistory() {
+        LocalDate cutoffDate = LocalDate.now().minusYears(1);
+        boolean removed = borrowRecords.removeIf(operation -> operation.isReturned()
+                && operation.getBorrowDate() != null
+                && operation.getBorrowDate().isBefore(cutoffDate));
+
+        if (removed) {
+            library_manage.util.TxtDataStore.saveBorrowRecords(borrowRecords);
         }
     }
 }
