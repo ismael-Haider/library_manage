@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -211,7 +212,7 @@ public final class TxtDataStore {
     private static int parseInt(String value, int fallback) {
         try {
             return Integer.parseInt(value.trim());
-        } catch (Exception exception) {
+        } catch (NumberFormatException exception) {
             return fallback;
         }
     }
@@ -222,7 +223,7 @@ public final class TxtDataStore {
                 return null;
             }
             return LocalDate.parse(value.trim());
-        } catch (Exception exception) {
+        } catch (DateTimeParseException exception) {
             return null;
         }
     }

@@ -1,3 +1,4 @@
-9780747532743|Harry Potter and the Philosopher's Stone|J.K. Rowling|5|1
-9780451524935|1984|George Orwell|3|2
-9780132350884|Clean Code|Robert C. Martin|4|0
+978-0-201-63361-0|Design Patterns|Erich Gamma|8|0
+978-0-321-35668-0|Effective Java|Joshua Bloch|3|0
+978-0-470-12686-4|Java For Dummies|Barry Burd|0|1
+978-0-596-00573-1|Head First Java|Kathy Sierra|5|0

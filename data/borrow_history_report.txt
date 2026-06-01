@@ -1,0 +1,4 @@
+Borrow History Report
+Generated: 2026-06-01
+
+ismael | Java For Dummies | ISBN: 978-0-470-12686-4 | Borrowed: 2026-06-01 | Due: 2026-06-15 | Returned: false | Return Date: -
