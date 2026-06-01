@@ -6,6 +6,8 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -31,22 +33,31 @@ public class SidebarPanel extends JPanel {
         JLabel title = new JLabel("Library Manage");
         title.setForeground(Color.WHITE);
         title.setFont(new Font("SansSerif", Font.BOLD, 22));
+        title.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        JLabel subtitle = new JLabel("Control center");
-        subtitle.setForeground(new Color(185, 197, 217));
-        subtitle.setFont(new Font("SansSerif", Font.PLAIN, 13));
+        ImageIcon originalIcon = new ImageIcon("util/icons/book_icon.png");
+        Image scaledImage = originalIcon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        JLabel icon = new JLabel(scaledIcon);
+        icon.setAlignmentX(Component.CENTER_ALIGNMENT); // لتوسيطها أفقياً
 
         JPanel branding = new JPanel();
         branding.setOpaque(false);
         branding.setLayout(new BoxLayout(branding, BoxLayout.Y_AXIS));
         branding.add(title);
         branding.add(Box.createVerticalStrut(6));
-        branding.add(subtitle);
+        JPanel iconPanel = new JPanel();
+        iconPanel.setOpaque(false);
+        iconPanel.setLayout(new BorderLayout());
+        iconPanel.add(icon, BorderLayout.CENTER);
+
+        branding.add(iconPanel);
+        branding.add(Box.createVerticalStrut(10));
 
         JPanel menu = new JPanel();
         menu.setOpaque(false);
         menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
-        menu.setBorder(BorderFactory.createEmptyBorder(200, 0, 0, 0));
+        menu.setBorder(BorderFactory.createEmptyBorder(28, 0, 0, 0));
 
         addButton(menu, "books", "Books", navigationHandler);
         addButton(menu, "transactions", "Transactions", navigationHandler);

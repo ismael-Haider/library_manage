@@ -4,7 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
+import java.nio.file.Paths;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -50,6 +53,8 @@ public class LibraryFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(1280, 760));
         setLocationRelativeTo(null);
+        setIconImage(new ImageIcon(Paths.get("util", "icons", "book_icon.png").toString()).getImage().getScaledInstance(
+                64, 64, Image.SCALE_SMOOTH));
         setLayout(new BorderLayout());
     }
 
