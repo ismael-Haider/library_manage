@@ -1,0 +1,46 @@
+Session Summary
+
+This session focused on splitting the Swing UI into clean panels and wiring the app to the existing library services.
+
+What was changed
+
+- Added a runnable application entry point in Main.java.
+- Split the UI into separate panels and controllers:
+  - Book management
+  - Transactions
+  - Reports
+  - Statistics
+- Connected the UI to the AVL-backed book service and the borrow/user services.
+- Added sidebar navigation and removed the Settings button.
+- Added book validation rules:
+  - ISBN must contain exactly four dashes.
+  - Title must be text.
+  - Author name must be text.
+  - Copies must be between 1 and 100.
+- Added table-click-to-search-field behavior from the books table.
+- Added a borrow/return transaction screen with user name input.
+- Moved the waiting-list view out of the book screen and into the transaction area.
+- Added report search by book name.
+- Added a Save Report button that exports the borrow history report to data/borrow_history_report.txt.
+- Added a statistics dashboard for total books, available books, total users, borrow records, most borrowed books, and most read authors.
+- Added automatic cleanup of archived borrow-history records older than one year.
+
+Scenarios covered in the project
+
+- Add a book.
+- Search a book by title or ISBN.
+- Click a book row to populate the search fields.
+- Update book copies.
+- Delete a book.
+- Borrow a book for a user.
+- Return a borrowed book.
+- View the waiting list for a book.
+- Search borrow history by book name.
+- Save a borrow-history report to a text file.
+- View statistics for books, authors, users, and borrow records.
+- Auto-remove archived history older than one year.
+
+Notes
+
+- The project compiles successfully after these updates.
+- Old returned borrow-history records older than one year are pruned before history display and before persistence.
