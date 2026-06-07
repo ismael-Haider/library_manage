@@ -48,6 +48,15 @@ public class TransactionController {
         return borrowServices.getBorrowHistory();
     }
 
+    public ServiceResult searchBorrowHistoryByUserName(String name) {
+        ServiceResult userResult = userServices.searchUserByName(name);
+        if (!userResult.isSuccess()) {
+            return userResult;
+        }
+        User user = (User) userResult.getData();
+        return borrowServices.searchBorrowRecordByUserId(user.getId());
+    }
+
     public ServiceResult getCurrentBorrowedBooks() {
         return borrowServices.getCurrentBorrowedBooks();
     }

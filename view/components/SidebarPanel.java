@@ -7,13 +7,13 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
-import javax.swing.ImageIcon;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,11 +30,6 @@ public class SidebarPanel extends JPanel {
         setBackground(BASE);
         setBorder(BorderFactory.createEmptyBorder(24, 18, 24, 18));
 
-        JLabel title = new JLabel("Library Manage");
-        title.setForeground(Color.WHITE);
-        title.setFont(new Font("SansSerif", Font.BOLD, 22));
-        title.setAlignmentX(Component.LEFT_ALIGNMENT);
-
         ImageIcon originalIcon = new ImageIcon("util/icons/book_icon.png");
         Image scaledImage = originalIcon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -44,11 +39,10 @@ public class SidebarPanel extends JPanel {
         JPanel branding = new JPanel();
         branding.setOpaque(false);
         branding.setLayout(new BoxLayout(branding, BoxLayout.Y_AXIS));
-        branding.add(title);
         branding.add(Box.createVerticalStrut(6));
         JPanel iconPanel = new JPanel();
         iconPanel.setOpaque(false);
-        iconPanel.setLayout(new BorderLayout());
+        iconPanel.setLayout(new BorderLayout());   
         iconPanel.add(icon, BorderLayout.CENTER);
 
         branding.add(iconPanel);

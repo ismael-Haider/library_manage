@@ -40,6 +40,7 @@ public class ReportPanel extends JPanel {
     private final JTable historyTable = new JTable(historyTableModel);
     private final JTextArea insightsArea = new JTextArea();
     private final JTextField searchTitleField = createField("Search by book name");
+    private final JTextField searchUserField = createField("Search by user name");
 
     public ReportPanel(ReportController reportController) {
         this.reportController = reportController;
@@ -63,12 +64,16 @@ public class ReportPanel extends JPanel {
 
         JPanel controls = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         controls.setOpaque(false);
+        JButton searchUser = createButton("Search User");
+        searchUser.addActionListener(event -> searchByUserName());
         JButton search = createButton("Search");
         search.addActionListener(event -> searchByTitle());
         JButton refresh = createButton("Refresh");
         refresh.addActionListener(event -> refreshReport());
         JButton save = createButton("Save Report");
         save.addActionListener(event -> saveReport());
+        controls.add(searchUserField);
+        controls.add(searchUser);
         controls.add(searchTitleField);
         controls.add(search);
         controls.add(refresh);
@@ -248,6 +253,25 @@ public class ReportPanel extends JPanel {
         }
 
         ServiceResult searchResult = reportController.searchBorrowHistoryByTitle(query);
+        if (!searchResult.isSuccess()) {
+            historyTableModel.setRecords(new ArrayList<>());
+            insightsArea.setText(searchResult.getMessage());
+            return;
+        }
+
+        @SuppressWarnings("unchecked")
+        ArrayList<BorrowOperation> filtered = (ArrayList<BorrowOperation>) searchResult.getData();
+        historyTableModel.setRecords(filtered);
+    }
+
+    private void searchByUserName() {
+        String query = searchUserField.getText().trim();
+        if (query.isEmpty() || "Search by user name".equals(query)) {
+            refreshReport();
+            return;
+        }
+
+        ServiceResult searchResult = reportController.searchBorrowHistoryByUserName(query);
         if (!searchResult.isSuccess()) {
             historyTableModel.setRecords(new ArrayList<>());
             insightsArea.setText(searchResult.getMessage());

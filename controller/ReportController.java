@@ -50,4 +50,8 @@ public class ReportController {
 
         return new ServiceResult(true, "Records found", filtered);
     }
+
+    public ServiceResult searchBorrowHistoryByUserName(String name) {
+        return transactionController.searchBorrowHistoryByUserName(name);
+    }
 }
