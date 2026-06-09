@@ -49,7 +49,7 @@ public class BookManagementPanel extends JPanel {
     private static final String DELETE_ISBN_PLACEHOLDER = "ISBN to delete";
     private static final String WAITING_ISBN_PLACEHOLDER = "ISBN for waiting list";
 
-    private static final Pattern ISBN_PATTERN = Pattern.compile("^[^-]+-[^-]+-[^-]+-[^-]+-[^-]+$");
+    private static final Pattern ISBN_PATTERN = Pattern.compile("^\\d+-\\d+-\\d+-\\d+-\\d+$");
     private static final Pattern TEXT_PATTERN = Pattern.compile("^[\\p{L}][\\p{L}\\s'.-]*$");
 
     private final BookController bookController;
