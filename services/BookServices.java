@@ -13,7 +13,6 @@ public class BookServices {
     public static int availableBooks = 0; // =? Number of book copies
     private final Avl avlBooks;
     private final AuthorServices authorServices;
-    private static BorrowServices borrowServices;
 
     public BookServices() {
         this(new AuthorServices());
@@ -137,11 +136,14 @@ public class BookServices {
                 right.book.getBorrowedCount(),
                 left.book.getBorrowedCount()));
 
-        if (books.size() <= 10) {
-            return new ServiceResult(true, "Most borrowed books found", books);
-        }
+        // if (books.size() <= 10) {
+        //     return new ServiceResult(true, "Most borrowed books found", books);
+        // }
 
-        return new ServiceResult(true, "Most borrowed books found", books.subList(0, 10));
+        // return new ServiceResult(true, "Most borrowed books found", books.subList(0,
+        // 10));
+        return new ServiceResult(true, "Most borrowed books found",
+                new ArrayList<>(books.subList(0, Math.min(10, books.size())))); // 
     }
 
     public Book getBookByIsbn(String isbn) { // where we using this ? in class BorrowServices when we want to get the

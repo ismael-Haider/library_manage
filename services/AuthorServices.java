@@ -12,8 +12,8 @@ public class AuthorServices {
         this.authors = TxtDataStore.loadAuthors();
     }
 
-    public List<Author> getAllAuthors() { // delete this method because we already have getAllAuthors() method that
-                                          // returns the same thing
+    public List<Author> getAllAuthors() { // where we use this method ? here in findOrCreateAuthor() method we use this
+                                          // method to add new author to the list of authors and save it to disk
         return authors;
     }
 
@@ -61,14 +61,15 @@ public class AuthorServices {
                         b2.getNumberOfReaders(),
                         b1.getNumberOfReaders()));
 
-        if (authors.size() <= 10) {
-            return new ServiceResult(true, "Most readers authors found", authors);
-        } else {
-            return new ServiceResult(true, "Most readers authors found", authors.subList(0, 10));
-        }
+        // if (authors.size() <= 10) {
+        //     return new ServiceResult(true, "Most readers authors found", authors);
+        // } else {
+            // return new ServiceResult(true, "Most readers authors found", authors.subList(0, 10));
+            return new ServiceResult(true, "Most readers authors found",new ArrayList<>(authors.subList(0, Math.min(10, authors.size()))));
+        //}
     }
 
-     public void saveAuthors() { // delete this method ,where we use this method ? we don't have data for authors 
+    public void saveAuthors() { // delete this method ,where we use this method ? we don't have data for authors
         TxtDataStore.saveAuthors(authors);
     }
 }
