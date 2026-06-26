@@ -134,6 +134,32 @@ public class BorrowServices {
         return new ServiceResult(true, "Book returned successfully");
     }
 
+    public ServiceResult processWaitingList(String isbn) {
+        if (!waitingLists.containsKey(isbn)
+                && waitingLists.get(isbn).isEmpty()) {
+            return new ServiceResult(true, "Copies added successfully", bookServices.getBookByIsbn(isbn));
+        }
+        while (waitingLists.containsKey(isbn)
+                && !waitingLists.get(isbn).isEmpty()) {
+            Book book = bookServices.getBookByIsbn(isbn);
+
+            if (book.getnumberOfCopies() <= 0) {
+                break;
+            }
+
+            User nextUser = waitingLists.get(isbn).poll();
+
+            ServiceResult result = borrowBook(nextUser, isbn);
+
+            if (!result.isSuccess()) {
+                break;
+            }
+        }
+
+        saveBorrowRecords();
+        return new ServiceResult(true, "successfully adding but we completed as much of the waiting list as possible ");
+    }
+
     // Get complete borrow history
     public ServiceResult getBorrowHistory() { // we using this in class Transaction Controller when we want to get the
                                               // borrow history from the reports panel
@@ -191,7 +217,7 @@ public class BorrowServices {
     }
 
     public ArrayList<BorrowOperation> getBorrowRecords() { // we not using this method anywhere, so we can delete it
-    return borrowRecords;
+        return borrowRecords;
     }
 
     public int getBorrowRecordCount() { // we using this in class Transaction Controller when display the count of
@@ -199,14 +225,16 @@ public class BorrowServices {
         return borrowRecords.size();
     }
 
-    public void saveBorrowRecords() { // we using this in class BorrowedServices when we want to save the borrow records to the disk after we borrowed or returned a book
+    public void saveBorrowRecords() { // we using this in class BorrowedServices when we want to save the borrow
+                                      // records to the disk after we borrowed or returned a book
         pruneArchivedBorrowHistory();
         library_manage.util.TxtDataStore.saveBorrowRecords(borrowRecords);
         bookServices.saveBooks();
         userServices.saveUsers();
     }
 
-    private void loadBorrowRecordsFromDisk() { // we using this in class BorrowedServices when we want to load the borrow records from the disk when we start the application
+    private void loadBorrowRecordsFromDisk() { // we using this in class BorrowedServices when we want to load the
+                                               // borrow records from the disk when we start the application
         ArrayList<BorrowOperation> records = library_manage.util.TxtDataStore.loadBorrowRecords(
                 userServices::getUserById,
                 bookServices::getBookByIsbn);
@@ -221,7 +249,8 @@ public class BorrowServices {
         pruneArchivedBorrowHistory();
     }
 
-    private void pruneArchivedBorrowHistory() { // we using this in class BorrowedServices when we want to prune the borrow records that are older than 1 year
+    private void pruneArchivedBorrowHistory() { // we using this in class BorrowedServices when we want to prune the
+                                                // borrow records that are older than 1 year
         LocalDate cutoffDate = LocalDate.now().minusYears(1);
         boolean removed = borrowRecords.removeIf(operation -> operation.isReturned()
                 && operation.getBorrowDate() != null

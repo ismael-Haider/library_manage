@@ -37,7 +37,7 @@ public class LibraryFrame extends JFrame {
     private final BookServices bookServices = new BookServices(authorServices);
     private final UserServices userServices = new UserServices();
     private final BorrowServices borrowServices = new BorrowServices(bookServices, userServices);
-    private final BookController bookController = new BookController(bookServices, authorServices);
+    private final BookController bookController = new BookController(bookServices, authorServices , borrowServices);
     private final TransactionController transactionController = new TransactionController(
             bookServices, authorServices, userServices, borrowServices);
     private final ReportController reportController = new ReportController(transactionController);

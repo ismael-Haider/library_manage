@@ -7,14 +7,16 @@ import library_manage.util.ServiceResult;
 public class BookController {
     private final BookServices bookService;
     private final AuthorServices authorServices;
+    private final BorrowServices borrowService;
 
     public BookController(BookServices bookService) {
-        this(bookService, new AuthorServices());
+        this(bookService, new AuthorServices(), new BorrowServices(bookService, new UserServices()));
     }
 
-    public BookController(BookServices bookService, AuthorServices authorServices) {
+    public BookController(BookServices bookService, AuthorServices authorServices, BorrowServices borrowService) {
         this.bookService = bookService;
         this.authorServices = authorServices;
+        this.borrowService = borrowService;
     }
 
     public ServiceResult addBook(String isbn, String title, String authorName, int copies) {
@@ -27,7 +29,7 @@ public class BookController {
         return bookService.searchBookByIsbn(isbn);
     }
 
-    public ServiceResult searchBookByTitle(String title) { 
+    public ServiceResult searchBookByTitle(String title) {
         return bookService.searchBookByTitle(title);
     }
 
@@ -36,14 +38,21 @@ public class BookController {
     }
 
     public ServiceResult addCopies(String isbn, int count) {
-        return bookService.addCopies(isbn, count);
+        ServiceResult result = bookService.addCopies(isbn, count);
+
+        if (result.isSuccess()) {
+           result = borrowService.processWaitingList(isbn);
+        }
+
+        return result;
     }
 
     public ServiceResult reduceCopies(String isbn, int count) {
         return bookService.reduceCopies(isbn, count);
     }
 
-    public ServiceResult getAllBooks() { // why this is exits here ? in class BookManagementPanel for [searchBooks() , loadTableData()] 
+    public ServiceResult getAllBooks() { // why this is exits here ? in class BookManagementPanel for [searchBooks() ,
+                                         // loadTableData()]
         return bookService.getAllBooks();
     }
 
