@@ -61,12 +61,12 @@ public class AuthorServices {
                         b2.getNumberOfReaders(),
                         b1.getNumberOfReaders()));
 
-        if (authors.size() <= 10) {
-            return new ServiceResult(true, "Most readers authors found", authors);
-        } else {
+        // if (authors.size() <= 10) {
+        //     return new ServiceResult(true, "Most readers authors found", authors);
+        // } else {
             // return new ServiceResult(true, "Most readers authors found", authors.subList(0, 10));
             return new ServiceResult(true, "Most readers authors found",new ArrayList<>(authors.subList(0, Math.min(10, authors.size()))));
-        }
+        //}
     }
 
     public void saveAuthors() { // delete this method ,where we use this method ? we don't have data for authors

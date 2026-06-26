@@ -136,14 +136,14 @@ public class BookServices {
                 right.book.getBorrowedCount(),
                 left.book.getBorrowedCount()));
 
-        if (books.size() <= 10) {
-            return new ServiceResult(true, "Most borrowed books found", books);
-        }
+        // if (books.size() <= 10) {
+        //     return new ServiceResult(true, "Most borrowed books found", books);
+        // }
 
         // return new ServiceResult(true, "Most borrowed books found", books.subList(0,
         // 10));
         return new ServiceResult(true, "Most borrowed books found",
-                new ArrayList<>(books.subList(0, Math.min(10, books.size()))));
+                new ArrayList<>(books.subList(0, Math.min(10, books.size())))); // 
     }
 
     public Book getBookByIsbn(String isbn) { // where we using this ? in class BorrowServices when we want to get the
