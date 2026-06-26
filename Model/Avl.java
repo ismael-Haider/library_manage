@@ -210,7 +210,7 @@ public class Avl {
         return node;
     }
 
-    public ArrayList<BookNode> getAllBooks() {  // where is the method getAllBooks it using ?  class BookServices , 
+    public ArrayList<BookNode> getAllBooks() {  // where is the method getAllBooks it using ? in class BookServices in method getBooksObjects() 
 
         ArrayList<BookNode> books = new ArrayList<>();
 
@@ -219,7 +219,7 @@ public class Avl {
         return books;
     }
 
-    private void getBooksInOrder(BookNode node, ArrayList<BookNode> books) {
+    private void getBooksInOrder(BookNode node, ArrayList<BookNode> books) { // we using this in here in getAllBooks())
 
         if (node == null)
             return;
@@ -232,7 +232,7 @@ public class Avl {
     }
 
     public int mostBorrowedBooks() { // where is the method mostBorrowedBooks it using ?  this method it isn't use in  class BookServices , (we can delete it ? " " )
-
+                                    // in report panel , 
         return mostBorrowedBooksHelper(root);
     }
 

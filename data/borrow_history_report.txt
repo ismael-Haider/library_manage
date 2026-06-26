@@ -1,4 +1,14 @@
 Borrow History Report
-Generated: 2026-06-01
+Generated: 2026-06-26
 
-ismael | Java For Dummies | ISBN: 978-0-470-12686-4 | Borrowed: 2026-06-01 | Due: 2026-06-15 | Returned: false | Return Date: -
+ismael | Java For Dummies | ISBN: 978-0-470-12686-4 | Borrowed: 2026-06-01 | Due: 2026-06-15 | Returned: true | Return Date: 2026-06-01
+ismael | Design Patterns | ISBN: 978-0-201-63361-0 | Borrowed: 2026-06-07 | Due: 2026-06-21 | Returned: true | Return Date: 2026-06-07
+hadi | Java For Dummies | ISBN: 978-0-470-12686-4 | Borrowed: 2026-06-26 | Due: 2026-07-10 | Returned: false | Return Date: -
+jafar | Java For Dummies | ISBN: 978-0-470-12686-4 | Borrowed: 2026-06-26 | Due: 2026-07-10 | Returned: true | Return Date: 2026-06-26
+ha | Java For Dummies | ISBN: 978-0-470-12686-4 | Borrowed: 2026-06-26 | Due: 2026-07-10 | Returned: false | Return Date: -
+aghiad | Java For Dummies | ISBN: 978-0-470-12686-4 | Borrowed: 2026-06-26 | Due: 2026-07-10 | Returned: true | Return Date: 2026-06-26
+kais | Java For Dummies | ISBN: 978-0-470-12686-4 | Borrowed: 2026-06-26 | Due: 2026-07-10 | Returned: false | Return Date: -
+aghiad | Java For Dummies | ISBN: 978-0-470-12686-4 | Borrowed: 2026-06-26 | Due: 2026-07-10 | Returned: false | Return Date: -
+ka | Java For Dummies | ISBN: 978-0-470-12686-4 | Borrowed: 2026-06-26 | Due: 2026-07-10 | Returned: false | Return Date: -
+kaa | Java For Dummies | ISBN: 978-0-470-12686-4 | Borrowed: 2026-06-26 | Due: 2026-07-10 | Returned: false | Return Date: -
+is | Java For Dummies | ISBN: 978-0-470-12686-4 | Borrowed: 2026-06-26 | Due: 2026-07-10 | Returned: false | Return Date: -

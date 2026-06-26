@@ -1,5 +1,11 @@
 111-0-111-111111-1|test withHadi|hadii|12|0
+111-0-111-111111-2|hadidd|ddd|3|0
+111-0-111-111111-3|one test|hadi test|3|0
+111-0-111-111111-4|test two|hadi test two|4|0
+111-0-111-111111-7|sfa|ga|23|0
+111-0-111-111112-1|tess|gs|32|0
+111-0-111-111113-1|gds|hag|2|0
+111-0-111-111131-1|dsf|ffff|32|0
 978-0-201-63361-0|Design Patterns|Erich Gamma|44|1
-978-0-321-35668-0|Effective Java|Joshua Bloch|3|0
 978-0-470-12686-4|Java For Dummies|Barry Burd|0|19
 978-0-596-00573-1|Head First Java|Kathy Sierra|5|0
