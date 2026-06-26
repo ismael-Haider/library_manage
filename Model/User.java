@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class User extends Person {
     private final boolean graduate;
-    private static int counter = 1;
+    private static int counter = 1; // number of users
     private final int id;
     public final ArrayList<Book> borrowedBooks;
     public final ArrayList<BorrowOperation> borrowedHistoryUser;
@@ -18,7 +18,7 @@ public class User extends Person {
         super(name);
         this.graduate = graduate;
         this.id = id;
-        counter = Math.max(counter, id + 1);
+        counter = id + 1;
         this.borrowedBooks = new ArrayList<>();
         this.borrowedHistoryUser = new ArrayList<>();
     }

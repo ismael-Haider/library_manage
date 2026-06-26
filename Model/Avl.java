@@ -69,8 +69,10 @@ public class Avl {
         } else if (book.getIsbn().compareTo(node.book.getIsbn()) > 0) {
             node.right = insertHelper(node.right, book);
         }
+        // دخلت عالمكان المحدد ولكن مو الدقيق والان فقرة التوازن
+
         node.height = 1 + Math.max(height(node.left), height(node.right));
-        // System.out.println("hight of node "+node.data+" is "+ node.height);
+
         int balance = getBalance(node);
 
         if (balance > 1 && book.getIsbn().compareTo(node.left.book.getIsbn()) < 0) {
@@ -114,28 +116,38 @@ public class Avl {
         return searchHelper(node.right, isbn);
     }
 
-   public Book searchBytitle(String title) {
-    return searchHelperBytitle(root, title);
-}
-
-private Book searchHelperBytitle(BookNode node, String title) {
-
-    if (node == null) {
-        return null;
+    public Book searchBytitle(String title) {
+        return searchHelperBytitle(root, title);
     }
 
-    Book leftResult = searchHelperBytitle(node.left, title);
+    private Book searchHelperBytitle(BookNode node, String title) { // n التعديل مشان نكون مستحدمين نفس الطريقة والبحث 
+        if (node == null)
+            return null;
 
-    if (leftResult != null) {
-        return leftResult;
+        if (title.equalsIgnoreCase(node.book.getTitle())) {
+            return node.book;
+        }
+
+        if (title.compareTo(node.book.getTitle()) < 0) {
+            return searchHelper(node.left, title);
+        }
+        return searchHelper(node.right, title);
+
+        // if (node == null) {
+        // return null;
+        // }
+
+        // Book leftResult = searchHelperBytitle(node.left, title);
+        // if (leftResult != null) {
+        // return leftResult;
+        // }
+
+        // if (node.book.getTitle().equalsIgnoreCase(title)) {
+        // return node.book;
+        // }
+
+        // return searchHelperBytitle(node.right, title);
     }
-
-    if (node.book.getTitle().equalsIgnoreCase(title)) {
-        return node.book;
-    }
-
-    return searchHelperBytitle(node.right, title);
-}
 
     public void delete(String isbn) {
         root = deleteHelper(root, isbn);
@@ -198,7 +210,7 @@ private Book searchHelperBytitle(BookNode node, String title) {
         return node;
     }
 
-    public ArrayList<BookNode> getAllBooks() {
+    public ArrayList<BookNode> getAllBooks() {  // where is the method getAllBooks it using ?  class BookServices , 
 
         ArrayList<BookNode> books = new ArrayList<>();
 
@@ -219,14 +231,14 @@ private Book searchHelperBytitle(BookNode node, String title) {
         getBooksInOrder(node.right, books);
     }
 
-    public int mostBorrowedBooks() {
+    public int mostBorrowedBooks() { // where is the method mostBorrowedBooks it using ?  this method it isn't use in  class BookServices , (we can delete it ? " " )
+
         return mostBorrowedBooksHelper(root);
     }
 
     int maxcountBorrowedOfbooks = 0;
 
     public int mostBorrowedBooksHelper(BookNode node) {
-
         if (node == null)
             return 0;
 
@@ -238,7 +250,7 @@ private Book searchHelperBytitle(BookNode node, String title) {
         return maxcountBorrowedOfbooks;
     }
 
-    public String mostReadAuthors() {
+    public String mostReadAuthors() { // where is the method mostReadAuthors it using ? this isn't use in folder services
         return mostReadAuthorsHelper(root);
     }
 

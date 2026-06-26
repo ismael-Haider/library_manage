@@ -23,7 +23,9 @@ public class BorrowServices {
         loadBorrowRecordsFromDisk();
     }
 
-    public ServiceResult borrowBook(User user, String isbn) {
+    // Borrow a book if available, otherwise add user to waiting list
+    public ServiceResult borrowBook(User user, String isbn) { // we using this in class TransactionController when we
+                                                              // want to borrow a book from the transaction panel
         if (user == null) {
             return new ServiceResult(false, "User cannot be null");
         }
@@ -45,7 +47,7 @@ public class BorrowServices {
 
         if (book.getnumberOfCopies() > 0) {
             book.setnumberOfCopies(book.getnumberOfCopies() - 1);
-            BookServices.availableBooks--;
+            BookServices.availableBooks--; // = Number of books copies
             book.setBorrowedCount(book.getBorrowedCount() + 1);
             book.getAuthor().incrementNumberOfReaders();
 
@@ -81,7 +83,9 @@ public class BorrowServices {
                 "Book unavailable. Added to waiting list. Position: " + waitingLists.get(isbn).size());
     }
 
-    public ServiceResult returnBook(User user, String isbn) {
+    // Return a borrowed book and auto-assign it to next user in waiting list
+    public ServiceResult returnBook(User user, String isbn) { // we using this in class Transaction Controller when we
+                                                              // want to return a book from the transaction panel
         if (user == null) {
             return new ServiceResult(false, "User cannot be null");
         }
@@ -130,8 +134,10 @@ public class BorrowServices {
         return new ServiceResult(true, "Book returned successfully");
     }
 
-    public ServiceResult getBorrowHistory() {
-        pruneArchivedBorrowHistory();
+    // Get complete borrow history
+    public ServiceResult getBorrowHistory() { // we using this in class Transaction Controller when we want to get the
+                                              // borrow history from the reports panel
+        pruneArchivedBorrowHistory(); // clear old records before returning the history
         if (borrowRecords.isEmpty()) {
             return new ServiceResult(false, "No borrow history found");
         }
@@ -139,17 +145,24 @@ public class BorrowServices {
         return new ServiceResult(true, "Borrow history found", borrowRecords);
     }
 
-    public ServiceResult getCurrentBorrowedBooks() {
+    // Get current borrowed books
+    public ServiceResult getCurrentBorrowedBooks() { // we using this in class Transaction Controller when we want to
+                                                     // get the current borrowed books from the transaction panel[
         ArrayList<BorrowOperation> current = new ArrayList<>();
         for (BorrowOperation operation : borrowRecords) {
             if (!operation.isReturned()) {
                 current.add(operation);
             }
         }
+        if (current.isEmpty()) {
+            return new ServiceResult(false, "No current borrowed books found");
+        }
         return new ServiceResult(true, "Current borrowed books retrieved", current);
     }
 
-    public ServiceResult showWaitingList(String isbn) {
+    // Show waiting list for a specific book
+    public ServiceResult showWaitingList(String isbn) { // we using this in class Transaction Controller when we want to
+                                                        // show the waiting list for a book from the transaction panel
         if (!waitingLists.containsKey(isbn)
                 || waitingLists.get(isbn).isEmpty()) {
             return new ServiceResult(false, "Waiting list is empty");
@@ -160,14 +173,10 @@ public class BorrowServices {
         return new ServiceResult(true, "Waiting list retrieved", waitingUsers);
     }
 
-    public ServiceResult searchBorrowRecordByUserId(int userId) {
-        // ArrayList<BorrowOperation> records = new ArrayList<>();
-
-        // for (BorrowOperation operation : borrowRecords) {
-        // if (operation.getBorrower().getId() == userId) {
-        // records.add(operation);
-        // }
-        // }
+    // Get borrowing history for a specific user
+    public ServiceResult searchBorrowRecordByUserId(int userId) { // we using this in class Transaction Controller when
+                                                                  // we want to search for the borrow history of a user
+                                                                  // by his name from the reports panel
         User user = userServices.getUserById(userId);
         if (user == null) {
             return new ServiceResult(false, "User not found");
@@ -181,22 +190,23 @@ public class BorrowServices {
         return new ServiceResult(true, "Records found", records);
     }
 
-    public ArrayList<BorrowOperation> getBorrowRecords() {
-        return borrowRecords;
+    public ArrayList<BorrowOperation> getBorrowRecords() { // we not using this method anywhere, so we can delete it
+    return borrowRecords;
     }
 
-    public int getBorrowRecordCount() {
+    public int getBorrowRecordCount() { // we using this in class Transaction Controller when display the count of
+                                        // Borrow Records in statistics and transactions panel
         return borrowRecords.size();
     }
 
-    public void saveBorrowRecords() {
+    public void saveBorrowRecords() { // we using this in class BorrowedServices when we want to save the borrow records to the disk after we borrowed or returned a book
         pruneArchivedBorrowHistory();
         library_manage.util.TxtDataStore.saveBorrowRecords(borrowRecords);
         bookServices.saveBooks();
         userServices.saveUsers();
     }
 
-    private void loadBorrowRecordsFromDisk() {
+    private void loadBorrowRecordsFromDisk() { // we using this in class BorrowedServices when we want to load the borrow records from the disk when we start the application
         ArrayList<BorrowOperation> records = library_manage.util.TxtDataStore.loadBorrowRecords(
                 userServices::getUserById,
                 bookServices::getBookByIsbn);
@@ -211,7 +221,7 @@ public class BorrowServices {
         pruneArchivedBorrowHistory();
     }
 
-    private void pruneArchivedBorrowHistory() {
+    private void pruneArchivedBorrowHistory() { // we using this in class BorrowedServices when we want to prune the borrow records that are older than 1 year
         LocalDate cutoffDate = LocalDate.now().minusYears(1);
         boolean removed = borrowRecords.removeIf(operation -> operation.isReturned()
                 && operation.getBorrowDate() != null

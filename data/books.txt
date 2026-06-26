@@ -1,4 +1,5 @@
-978-0-201-63361-0|Design Patterns|Erich Gamma|8|1
+111-0-111-111111-1|test withHadi|hadii|12|0
+978-0-201-63361-0|Design Patterns|Erich Gamma|44|1
 978-0-321-35668-0|Effective Java|Joshua Bloch|3|0
-978-0-470-12686-4|Java For Dummies|Barry Burd|1|1
+978-0-470-12686-4|Java For Dummies|Barry Burd|21|3
 978-0-596-00573-1|Head First Java|Kathy Sierra|5|0

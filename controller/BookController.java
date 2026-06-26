@@ -27,7 +27,7 @@ public class BookController {
         return bookService.searchBookByIsbn(isbn);
     }
 
-    public ServiceResult searchBookByTitle(String title) {
+    public ServiceResult searchBookByTitle(String title) { 
         return bookService.searchBookByTitle(title);
     }
 
@@ -43,7 +43,7 @@ public class BookController {
         return bookService.reduceCopies(isbn, count);
     }
 
-    public ServiceResult getAllBooks() {
+    public ServiceResult getAllBooks() { // why this is exits here ? in class BookManagementPanel for [searchBooks() , loadTableData()] 
         return bookService.getAllBooks();
     }
 

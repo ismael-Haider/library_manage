@@ -18,7 +18,7 @@ public class Book {
         this.borrowedCount = 0;
     }
 
-    public Book(String title, String isbn, Author author, int numberOfCopies, int borrowedCount) {
+    public Book(String title, String isbn, Author author, int numberOfCopies, int borrowedCount) { // wher we are using this con... ? when we returned the info from csv
         this.title = title;
         this.isbn = isbn;
         this.author = author;
@@ -54,7 +54,7 @@ public class Book {
         this.numberOfCopies = numberOfCopies;
     }
 
-    public void displayInfo() {
+    public void displayInfo() { // 
         System.out.println("Title: " + title);
         System.out.println("Author: " + author.getName());
         System.out.println("ISBN: " + isbn);

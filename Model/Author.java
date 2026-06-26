@@ -8,7 +8,7 @@ public class Author extends Person {
         numberOfReaders = 0;
     }
 
-    public Author(String name, int numberOfReaders) {
+    public Author(String name, int numberOfReaders) { // where  we use this ? when we returned from csv
         super(name);
         this.numberOfReaders = numberOfReaders;
     }

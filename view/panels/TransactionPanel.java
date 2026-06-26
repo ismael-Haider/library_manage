@@ -212,6 +212,7 @@ public class TransactionPanel extends JPanel {
 
         ServiceResult result = transactionController.borrowBook(userName, graduateCheckBox.isSelected(), isbn);
         statusLabel.setText(result.getMessage());
+
         refreshAll();
     }
 
@@ -252,6 +253,7 @@ public class TransactionPanel extends JPanel {
         ArrayList<User> users = (ArrayList<User>) result.getData();
         waitingListTableModel.setUsers(users);
         statusLabel.setText("Waiting list loaded.");
+        // waitingIsbnField.setText(isbn);
     }
 
     private String readValue(JTextField field, String placeholder) {

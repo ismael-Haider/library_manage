@@ -65,7 +65,7 @@ public class TransactionController {
         return borrowServices.getBorrowRecordCount();
     }
 
-    public int getTotalBooks() {
+    public int getTotalBooks() { // we using in StatisticsPanel for displaying total books 
         return bookServices.getBookCount();
     }
 
