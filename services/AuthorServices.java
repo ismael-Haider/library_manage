@@ -23,7 +23,7 @@ public class AuthorServices {
     }
 
     public Author findAuthorByName(String authorName) { // we using this in class
-        // BookServices when we want to find an author by name from the disk when we
+        // BookController when we want to find an author by name from the disk when we
         // start the application , and in here in findOrCreateAuthor()
 
         if (authorName == null || authorName.trim().isEmpty()) {

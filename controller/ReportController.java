@@ -12,23 +12,26 @@ public class ReportController {
         this.transactionController = transactionController;
     }
 
-    public ServiceResult getBorrowHistory() {
+    // WE USING THIS CLASS FROM CLASS  ReportPanel IN  refreshReport() ,  in searchByTitle() in searchBorrowHistoryByUserName() . THEN   TO CLASS  TransactionController
+    // WE USING THIS CLASS FROM CLASS  StatisticsPanel IN  refreshStatistics() . THEN   TO CLASS  TransactionController
+
+    public ServiceResult getBorrowHistory() { // we using this in class ReportPanel in refreshReport() when we want to refresh the borrow history table
         return transactionController.getBorrowHistory();
     }
 
-    public ServiceResult getCurrentBorrowedBooks() {
+    public ServiceResult getCurrentBorrowedBooks() { // we usign this in class ReportPanel in refreshReport() when we want to refresh the number of current borrowed books table
         return transactionController.getCurrentBorrowedBooks();
     }
 
-    public ServiceResult getMostBorrowedBooks() {
+    public ServiceResult getMostBorrowedBooks() { // we using in class StatisticsPanel in refreshStatistics() and in class ReportPanel in refreshReport() for displaying most borrowed books
         return transactionController.getMostBorrowedBooks();
     }
 
-    public ServiceResult getMostReadAuthors() {
+    public ServiceResult getMostReadAuthors() { // we using in class StatisticsPanel in refreshStatistics() and in class ReportPanel in refreshReport() for displaying most read authors
         return transactionController.getMostReadAuthors();
     }
 
-    public ServiceResult searchBorrowHistoryByTitle(String title) {
+    public ServiceResult searchBorrowHistoryByTitle(String title) { // we using in class ReportPanel in searchByTitle() when we want to search for a borrow history by book title from the report panel
         ServiceResult historyResult = transactionController.getBorrowHistory();
         if (!historyResult.isSuccess()) {
             return historyResult;
@@ -51,7 +54,7 @@ public class ReportController {
         return new ServiceResult(true, "Records found", filtered);
     }
 
-    public ServiceResult searchBorrowHistoryByUserName(String name) {
+    public ServiceResult searchBorrowHistoryByUserName(String name) { // this using in class ReportPanel in searchBorrowHistoryByUserName() when we want to search for a borrow history by user name from the report panel
         return transactionController.searchBorrowHistoryByUserName(name);
     }
 }

@@ -143,7 +143,6 @@ public class StatisticsPanel extends JPanel {
         availableBooksLabel.setText(String.valueOf(transactionController.getAvailableBooks()));
         totalUsersLabel.setText(String.valueOf(transactionController.getTotalUsers()));
         borrowCountLabel.setText(String.valueOf(transactionController.getBorrowRecordCount()));
-
         topBooksArea.setText(renderBooks(reportController.getMostBorrowedBooks()));
         topAuthorsArea.setText(renderAuthors(reportController.getMostReadAuthors()));
     }

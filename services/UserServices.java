@@ -12,7 +12,7 @@ public class UserServices {
 		this.users = TxtDataStore.loadUsers();
 	}
 
-	public User findOrCreateUser(String name, boolean graduate) {
+	public User findOrCreateUser(String name, boolean graduate) { // we using this in TransactionController when we want to find or create a user when borrowing a book from the transaction panel
 		if (name == null || name.trim().isEmpty()) {
 			return null;
 		}
@@ -33,7 +33,7 @@ public class UserServices {
 		return new ServiceResult(true, "Users retrieved successfully", users);
 	}
 
-	public ServiceResult searchUserByName(String name) {
+	public ServiceResult searchUserByName(String name) { // this using in TransactionController when we want to search for a user by name from the transaction panel for displaying the user information and the borrowed books
 		if (name == null || name.trim().isEmpty()) {
 			return new ServiceResult(false, "Name cannot be empty");
 		}
@@ -64,7 +64,7 @@ public class UserServices {
 		TxtDataStore.saveUsers(users);
 	}
 
-	public int getUserCount() {
+	public int getUserCount() { // this is using in TransactionControllerWhen we want to display the number of users on the screen in the statistics panel
 		return users.size();
 	}
 }

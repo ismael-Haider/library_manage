@@ -245,7 +245,7 @@ public class ReportPanel extends JPanel {
         return field;
     }
 
-    private void searchByTitle() {
+    private void searchByTitle() { // we using this for search on book by it's title and disply the borrow history in tabel
         String query = searchTitleField.getText().trim();
         if (query.isEmpty() || "Search by book name".equals(query)) {
             refreshReport();
@@ -264,7 +264,7 @@ public class ReportPanel extends JPanel {
         historyTableModel.setRecords(filtered);
     }
 
-    private void searchByUserName() {
+    private void searchByUserName() { // we using this for search on user by it's name and disply his borrow books in tabel
         String query = searchUserField.getText().trim();
         if (query.isEmpty() || "Search by user name".equals(query)) {
             refreshReport();

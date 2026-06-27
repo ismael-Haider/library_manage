@@ -129,7 +129,9 @@ public class BookServices {
         return new ServiceResult(true, "Books retrieved successfully", books);
     }
 
-    public ServiceResult getMostBorrowedBooks() {// where we using this ? in class TransactionController when we want to
+    // Now, everything mentioned above is used in the class BookController.  
+
+    public ServiceResult getMostBorrowedBooks() {// # where we using this ? in class TransactionController when we want to
                                                  // show the most borrowed books in the statistics panel
         ArrayList<BookNode> books = avlBooks.getAllBooks();
         books.sort((left, right) -> Integer.compare(
@@ -152,7 +154,7 @@ public class BookServices {
         return avlBooks.search(isbn);
     }
 
-    public ArrayList<Book> getAllBookObjects() { // where we using this ? in class BookServices when we want to save the
+    public ArrayList<Book> getAllBookObjects() { // # where we using this ? in class BookServices in saveBooks()  when we want to save the
                                                  // books to the disk
         ArrayList<Book> books = new ArrayList<>();
         for (BookNode bookNode : avlBooks.getAllBooks()) {
@@ -161,7 +163,7 @@ public class BookServices {
         return books;
     }
 
-    public int getBookCount() { // where we using this ? in class TransactionController when we want to get the
+    public int getBookCount() { // # where we using this ? in class TransactionController when we want to get the
                                 // total number of books in the library , and in class LibraryFrame for if is 0
                                 // to Autofill
         return avlBooks.getAllBooks().size();
@@ -172,7 +174,7 @@ public class BookServices {
         TxtDataStore.saveBooks(getAllBookObjects());
     }
 
-    private void loadBooksFromDisk() { // where we using this ? in class BookServices when we want to load the books
+    private void loadBooksFromDisk() { // # where we using this ? in class BookServices when we want to load the books
                                        // from the disk when we start the application
         ArrayList<Book> books = TxtDataStore.loadBooks(authorName -> {
             Author author = authorServices.findAuthorByName(authorName);
