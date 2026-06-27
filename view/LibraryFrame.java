@@ -44,6 +44,7 @@ public class LibraryFrame extends JFrame {
 
     public LibraryFrame() {
         configureFrame();
+        // just if i have zero book 
         seedDemoBooksIfNeeded();
         buildUi();
     }

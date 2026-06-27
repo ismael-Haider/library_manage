@@ -8,7 +8,7 @@ public class BookController {
     private final BookServices bookService;
     private final AuthorServices authorServices;
     private final BorrowServices borrowService;
-
+// here i use this in every place just to don't assign to it AuthorServices to be this operation autumatic here by using this
     public BookController(BookServices bookService) {
         this(bookService, new AuthorServices(), new BorrowServices(bookService, new UserServices()));
     }
@@ -34,14 +34,17 @@ public class BookController {
     }
 
     public ServiceResult deleteBook(String isbn) {
+        if(borrowService.borrowRecords.stream().anyMatch(record -> record.getBook().getIsbn().equals(isbn) && !record.isReturned())) {
+            return new ServiceResult(false, "Cannot delete book. There are unreturned copies.");
+        }
         return bookService.deleteBook(isbn);
     }
 
     public ServiceResult addCopies(String isbn, int count) {
         ServiceResult result = bookService.addCopies(isbn, count);
 
-        if (result.isSuccess()) {
-           result = borrowService.processWaitingList(isbn);
+        if (result.isSuccess() && !borrowService.waitingLists.isEmpty()) {
+            result = borrowService.processWaitingList(isbn);
         }
 
         return result;

@@ -14,6 +14,7 @@ public class BookServices {
     private final Avl avlBooks;
     private final AuthorServices authorServices;
 
+    // here i use this in every place just to don't assign to it aurhorServices to be this operation autumatic here by using this 
     public BookServices() {
         this(new AuthorServices());
     }
@@ -76,7 +77,7 @@ public class BookServices {
         if (book == null) {
             return new ServiceResult(false, "Book not found");
         }
-
+        
         availableBooks -= book.getnumberOfCopies();
         avlBooks.delete(isbn);
         TxtDataStore.saveBooks(getAllBookObjects());
@@ -97,6 +98,7 @@ public class BookServices {
 
         book.setnumberOfCopies(book.getnumberOfCopies() + count);
         availableBooks += count;
+        
         TxtDataStore.saveBooks(getAllBookObjects());
         return new ServiceResult(true, "Copies added successfully", book);
     }

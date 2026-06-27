@@ -5,7 +5,8 @@ import library_manage.Model.BorrowOperation;
 import library_manage.util.ServiceResult;
 
 public class ReportController {
-
+// here i deal with the transaction controller because i don't have service for report but i have service for transaction 
+// so i use the transaction controller to get the data from the transaction service and then i filter it and return it to the report panel
     private final TransactionController transactionController;
 
     public ReportController(TransactionController transactionController) {

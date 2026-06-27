@@ -48,7 +48,6 @@ public class TransactionPanel extends JPanel {
 
         add(buildTopSection(), BorderLayout.NORTH);
         add(buildTableCard(), BorderLayout.CENTER);
-        refreshAll();
     }
 
     private JPanel buildTopSection() {
@@ -137,10 +136,10 @@ public class TransactionPanel extends JPanel {
         JPanel controls = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         controls.setOpaque(false);
         waitingIsbnField.setColumns(18);
-        JButton loadButton = createButton("Load Waiting List");
-        loadButton.addActionListener(event -> loadWaitingList());
+        JButton searchButton = createButton("search Waiting List");
+        searchButton.addActionListener(event -> searchWaitingList());
         controls.add(waitingIsbnField);
-        controls.add(loadButton);
+        controls.add(searchButton);
         header.add(title, BorderLayout.WEST);
         header.add(controls, BorderLayout.EAST);
 
@@ -211,9 +210,30 @@ public class TransactionPanel extends JPanel {
         }
 
         ServiceResult result = transactionController.borrowBook(userName, graduateCheckBox.isSelected(), isbn);
+        System.out.println(graduateCheckBox.isSelected());
         statusLabel.setText(result.getMessage());
 
-        refreshAll();
+        // Update the waiting list search field with the ISBN
+        waitingIsbnField.setText(isbn);
+
+        // Refresh counts but don't clear the table yet
+        userCountLabel.setText(String.valueOf(transactionController.getTotalUsers()));
+        borrowCountLabel.setText(String.valueOf(transactionController.getBorrowRecordCount()));
+
+        // If user was added to waiting list, automatically show the waiting list
+        if (!result.isSuccess() && result.getMessage().contains("Added to waiting list")) {
+            searchWaitingListAutumaticaly(isbn);
+        } else {
+            // If not added to waiting list, clear the table
+            waitingListTableModel.setUsers(new ArrayList<>());
+        }
+
+        // refreshAll();
+        // waitingIsbnField.setText(isbn);
+        // if (!result.isSuccess() && result.getMessage().contains("Added to waiting
+        // list")) {
+        // searchWaitingListAutumaticaly(isbn);
+        // }
     }
 
     private void returnBook() {
@@ -226,16 +246,36 @@ public class TransactionPanel extends JPanel {
 
         ServiceResult result = transactionController.returnBook(userName, isbn);
         statusLabel.setText(result.getMessage());
-        refreshAll();
-    }
 
-    public void refreshAll() {
+        // Update the waiting list search field with the ISBN
+        waitingIsbnField.setText(isbn);
+
+        // Refresh counts but don't clear the table yet
         userCountLabel.setText(String.valueOf(transactionController.getTotalUsers()));
         borrowCountLabel.setText(String.valueOf(transactionController.getBorrowRecordCount()));
-        waitingListTableModel.setUsers(new ArrayList<>());
+
+        // If book was returned, refresh the waiting list to show next user
+        if (result.isSuccess()) {
+            searchWaitingListAutumaticaly(isbn);
+        } else {
+            // If return failed, clear the table
+            waitingListTableModel.setUsers(new ArrayList<>());
+        }
+
+        // refreshAll();
+        // // If book was returned, refresh the waiting list to show next user
+        // if (result.isSuccess()) {
+        // searchWaitingListAutumaticaly(isbn);
+        // }
     }
 
-    private void loadWaitingList() {
+    // public void refreshAll() {
+    // userCountLabel.setText(String.valueOf(transactionController.getTotalUsers()));
+    // borrowCountLabel.setText(String.valueOf(transactionController.getBorrowRecordCount()));
+    // waitingListTableModel.setUsers(new ArrayList<>());
+    // }
+
+    private void searchWaitingList() {
         String isbn = readValue(waitingIsbnField, "ISBN for waiting list");
         if (isbn.isEmpty()) {
             statusLabel.setText("Enter an ISBN for the waiting list.");
@@ -252,7 +292,30 @@ public class TransactionPanel extends JPanel {
         @SuppressWarnings("unchecked")
         ArrayList<User> users = (ArrayList<User>) result.getData();
         waitingListTableModel.setUsers(users);
-        statusLabel.setText("Waiting list loaded.");
+        statusLabel.setText("Waiting list searched.");
+    }
+
+    private void searchWaitingListAutumaticaly(String isbn) {
+        if (isbn == null || isbn.trim().isEmpty()) {
+            waitingListTableModel.setUsers(new ArrayList<>());
+            statusLabel.setText("Enter an ISBN to view waiting list");
+            return;
+        }
+
+        ServiceResult result = transactionController.getWaitingList(isbn.trim());
+        if (!result.isSuccess()) {
+            waitingListTableModel.setUsers(new ArrayList<>());
+            // Don't change status label if it's just empty
+            if (!statusLabel.getText().contains("searched")) {
+                statusLabel.setText(result.getMessage());
+            }
+            return;
+        }
+
+        @SuppressWarnings("unchecked")
+        ArrayList<User> users = (ArrayList<User>) result.getData();
+        waitingListTableModel.setUsers(users);
+        statusLabel.setText("Waiting list for ISBN: " + isbn + " (" + users.size() + " users)");
     }
 
     private String readValue(JTextField field, String placeholder) {

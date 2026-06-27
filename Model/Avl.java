@@ -132,21 +132,6 @@ public class Avl {
             return searchHelper(node.left, title);
         }
         return searchHelper(node.right, title);
-
-        // if (node == null) {
-        // return null;
-        // }
-
-        // Book leftResult = searchHelperBytitle(node.left, title);
-        // if (leftResult != null) {
-        // return leftResult;
-        // }
-
-        // if (node.book.getTitle().equalsIgnoreCase(title)) {
-        // return node.book;
-        // }
-
-        // return searchHelperBytitle(node.right, title);
     }
 
     public void delete(String isbn) {
@@ -229,43 +214,5 @@ public class Avl {
         books.add(node);
 
         getBooksInOrder(node.right, books);
-    }
-
-    public int mostBorrowedBooks() { // where is the method mostBorrowedBooks it using ?  this method it isn't use in  class BookServices , (we can delete it ? " " )
-                                    // in report panel , 
-        return mostBorrowedBooksHelper(root);
-    }
-
-    int maxcountBorrowedOfbooks = 0;
-
-    public int mostBorrowedBooksHelper(BookNode node) {
-        if (node == null)
-            return 0;
-
-        mostBorrowedBooksHelper(node.left);
-        if (maxcountBorrowedOfbooks < node.book.getBorrowedCount()) {
-            maxcountBorrowedOfbooks = node.book.getBorrowedCount();
-        }
-        mostBorrowedBooksHelper(node.right);
-        return maxcountBorrowedOfbooks;
-    }
-
-    public String mostReadAuthors() { // where is the method mostReadAuthors it using ? this isn't use in folder services
-        return mostReadAuthorsHelper(root);
-    }
-
-    int maxcountReadForAuthors = 0;
-    String mostReadAuthor = null;
-
-    public String mostReadAuthorsHelper(BookNode node) {
-        if (node == null)
-            return null;
-        mostReadAuthorsHelper(node.left);
-        if (maxcountReadForAuthors < node.book.getAuthor().getNumberOfReaders()) {
-            maxcountReadForAuthors = node.book.getAuthor().getNumberOfReaders();
-            mostReadAuthor = node.book.getAuthor().getName();
-        }
-        mostReadAuthorsHelper(node.right);
-        return mostReadAuthor;
     }
 }

@@ -1,5 +1,7 @@
 package library_manage.controller;
 
+import java.util.HashMap;
+import java.util.PriorityQueue;
 import library_manage.Model.User;
 import library_manage.services.AuthorServices;
 import library_manage.services.BookServices;
@@ -22,6 +24,11 @@ public class TransactionController {
         this.borrowServices = borrowServices;
     }
 
+    public HashMap<String, PriorityQueue<User>> getAllWaitingList(){
+        return borrowServices.waitingLists;
+    }
+
+
     public ServiceResult borrowBook(String userName, boolean graduate, String isbn) { // we using this in class TransactionPanel in borrowBook()  when we want to borrow a book from the transaction panel
         User user = userServices.findOrCreateUser(userName, graduate);
         if (user == null) {
@@ -38,6 +45,7 @@ public class TransactionController {
 
         User user = (User) userResult.getData();
         return borrowServices.returnBook(user, isbn);
+
     }
 
     public ServiceResult getWaitingList(String isbn) { // we using this in class TransactionPanel in loadWaitingList() when we want to load the waiting list  

@@ -8,7 +8,9 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.function.Function;
 import library_manage.Model.Author;
 import library_manage.Model.Book;
@@ -86,8 +88,8 @@ public final class TxtDataStore {
             if (line.trim().isEmpty()) {
                 continue;
             }
-
-            String[] parts = line.split("\\|", -1);
+            // the number -1 to not include empty element ex : ismael| haider | => ["ismael","haider"] , without -1 ["ismael","haider",""]
+            String[] parts = line.split("\\|", -1);// to move to the 
             if (parts.length < 5) {
                 continue;
             }
@@ -179,6 +181,65 @@ public final class TxtDataStore {
         }
         writeAllLines(BORROWS_FILE, lines);
     }
+    public static void saveWaitingLists(HashMap<String, PriorityQueue<User>> waitingLists) {
+        ArrayList<String> lines = new ArrayList<>();
+        for (String isbn : waitingLists.keySet()) {
+            PriorityQueue<User> queue = waitingLists.get(isbn);
+            StringBuilder sb = new StringBuilder();
+            sb.append(isbn).append("|");
+            for (User user : queue) {
+                sb.append(user.getId()).append(",");
+            }
+            if (!queue.isEmpty()) {
+                sb.setLength(sb.length() - 1); // Remove the last comma
+            }
+            lines.add(sb.toString());
+        }
+        writeAllLines(DATA_DIR.resolve("waiting_lists.txt"), lines);
+    }
+    
+    public static HashMap<String, PriorityQueue<User>> loadWaitingLists(Function<Integer, User> userResolver) {
+        HashMap<String, PriorityQueue<User>> waitingLists = new HashMap<>();
+        Path waitingFile = DATA_DIR.resolve("waiting_lists.txt");
+        
+        for (String line : readAllLines(waitingFile)) {
+            if (line.trim().isEmpty()) {
+                continue;
+            }
+            
+            String[] parts = line.split("\\|", -1);
+            if (parts.length < 2) {
+                continue;
+            }
+            
+            String isbn = parts[0].trim();
+            if (isbn.isEmpty()) {
+                continue;
+            }
+            
+            // FIX: Add the comparator here - graduates have priority
+            PriorityQueue<User> queue = new PriorityQueue<>((first, second) -> 
+                Boolean.compare(second.isGraduate(), first.isGraduate()));
+            
+            String usersPart = parts[1].trim();
+            if (!usersPart.isEmpty()) {
+                String[] userIds = usersPart.split(",");
+                for (String userIdStr : userIds) {
+                    int userId = parseInt(userIdStr.trim(), -1);
+                    if (userId > 0) {
+                        User user = userResolver.apply(userId);
+                        if (user != null) {
+                            queue.add(user);
+                        }
+                    }
+                }
+            }
+            
+            waitingLists.put(isbn, queue);
+        }
+        
+        return waitingLists;
+    }
 
     private static List<String> readAllLines(Path file) {
         try {
@@ -227,4 +288,5 @@ public final class TxtDataStore {
             return null;
         }
     }
+    
 }

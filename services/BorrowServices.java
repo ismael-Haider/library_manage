@@ -10,8 +10,10 @@ import library_manage.Model.User;
 import library_manage.util.ServiceResult;
 
 public class BorrowServices {
-    private final ArrayList<BorrowOperation> borrowRecords;
-    private final HashMap<String, PriorityQueue<User>> waitingLists;
+    // i make it public for use it in the book controller if i need to delete booke it need to be no person had this book or borrow it 
+    public final ArrayList<BorrowOperation> borrowRecords;
+    // i make it public for use it in the book controller class to check if the waiting list is empty or not when we add copies to a book
+    public final HashMap<String, PriorityQueue<User>> waitingLists; // <isbn, waiting list of users>
     private final BookServices bookServices;
     private final UserServices userServices;
 
@@ -21,6 +23,7 @@ public class BorrowServices {
         this.waitingLists = new HashMap<>();
         this.userServices = userServices;
         loadBorrowRecordsFromDisk();
+        loadWaitingListsFromDisk();
     }
 
     // Borrow a book if available, otherwise add user to waiting list
@@ -78,6 +81,7 @@ public class BorrowServices {
         }
 
         waitingLists.get(isbn).add(user);
+        saveWaitingLists(); 
         return new ServiceResult(
                 false,
                 "Book unavailable. Added to waiting list. Position: " + waitingLists.get(isbn).size());
@@ -115,9 +119,10 @@ public class BorrowServices {
             }
         }
 
-        if (waitingLists.containsKey(isbn)
-                && !waitingLists.get(isbn).isEmpty()) {
+        if (waitingLists.containsKey(isbn) &&
+                !waitingLists.get(isbn).isEmpty()) {
             User nextUser = waitingLists.get(isbn).poll();
+            saveWaitingLists();
 
             ServiceResult autoBorrowResult = borrowBook(nextUser, isbn);
 
@@ -135,8 +140,8 @@ public class BorrowServices {
     }
 
     public ServiceResult processWaitingList(String isbn) {
-        if (!waitingLists.containsKey(isbn)
-                && waitingLists.get(isbn).isEmpty()) {
+        if (waitingLists.containsKey(isbn) &&
+                !waitingLists.get(isbn).isEmpty()) {
             return new ServiceResult(true, "Copies added successfully", bookServices.getBookByIsbn(isbn));
         }
         while (waitingLists.containsKey(isbn)
@@ -248,6 +253,16 @@ public class BorrowServices {
         }
         pruneArchivedBorrowHistory();
     }
+
+    private void loadWaitingListsFromDisk() {
+        HashMap<String, PriorityQueue<User>> loaded = library_manage.util.TxtDataStore.loadWaitingLists(
+            userServices::getUserById
+        );
+        this.waitingLists.putAll(loaded);
+}
+    private void saveWaitingLists() {
+        library_manage.util.TxtDataStore.saveWaitingLists(waitingLists);
+}
 
     private void pruneArchivedBorrowHistory() { // we using this in class BorrowedServices when we want to prune the
                                                 // borrow records that are older than 1 year
